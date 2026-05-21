@@ -4,6 +4,7 @@ from typing import Union
 
 PATTERNS = {
     "email":       (r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b", "[EMAIL]"),
+    "ssn":         (r"\b\d{3}-\d{2}-\d{4}\b", "[SSN]"),
     "ip":          (r"\b(?:\d{1,3}\.){3}\d{1,3}\b", "[IP]"),
     "credit_card": (r"\b(?:\d{4}[\-\s]?){3}\d{4}\b", "[CARD]"),
     "phone":       (r"\b(?:\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b", "[PHONE]"),
@@ -36,3 +37,8 @@ class LogMasker:
 
     def mask_lines(self, text: str) -> str:
         return "\n".join(self.mask(line) for line in text.splitlines())
+
+
+def mask_pii(text: str) -> str:
+    """Convenience function: mask PII in a single string."""
+    return LogMasker().mask(text)
